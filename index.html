@@ -3,108 +3,979 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Your Name1 | Portfolio</title>
+  <title>Your Name — Portfolio</title>
+  <meta name="description" content="A refined dark portfolio gallery focused on selected work." />
   <style>
+    :root {
+      --bg: #050505;
+      --bg-soft: #0c0c0d;
+      --panel: rgba(255,255,255,0.05);
+      --panel-strong: rgba(255,255,255,0.08);
+      --border: rgba(255,255,255,0.12);
+      --text: #f4f4f2;
+      --muted: #aaa9a4;
+      --muted-2: #7b7a76;
+      --accent: #e8dcc4;
+      --accent-2: #b89e76;
+      --shadow: 0 20px 70px rgba(0,0,0,0.45);
+      --radius-xl: 28px;
+      --radius-lg: 22px;
+      --radius-md: 16px;
+      --max: 1380px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
     body {
-      font-family: Arial, sans-serif;
       margin: 0;
-      background: #f5f5f5;
-      color: #222;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(184,158,118,0.09), transparent 28%),
+        radial-gradient(circle at 85% 18%, rgba(255,255,255,0.05), transparent 24%),
+        linear-gradient(180deg, #090909 0%, #050505 100%);
+      min-height: 100vh;
+      letter-spacing: 0.01em;
     }
 
-    header {
-      text-align: center;
-      padding: 40px 20px 20px;
-      background: white;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; }
+
+    .grain {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.08;
+      mix-blend-mode: soft-light;
+      background-image:
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,0.7) 0.7px, transparent 0.9px),
+        radial-gradient(circle at 80% 30%, rgba(255,255,255,0.5) 0.6px, transparent 0.8px),
+        radial-gradient(circle at 50% 80%, rgba(255,255,255,0.45) 0.7px, transparent 0.9px);
+      background-size: 180px 180px, 220px 220px, 160px 160px;
     }
 
-    h1 {
-      margin: 0 0 10px;
-      font-size: 2rem;
+    .wrap {
+      width: min(calc(100% - 32px), var(--max));
+      margin: 0 auto;
     }
 
-    p {
-      margin: 0;
-      color: #666;
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      backdrop-filter: blur(18px);
+      background: linear-gradient(180deg, rgba(5,5,5,0.88), rgba(5,5,5,0.62));
+      border-bottom: 1px solid rgba(255,255,255,0.06);
     }
 
-    .gallery {
-      max-width: 1100px;
-      margin: 30px auto;
-      padding: 0 20px 40px;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    .topbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       gap: 18px;
+      min-height: 78px;
     }
 
-    .card {
-      background: white;
-      border-radius: 12px;
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.16);
+      background: linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.03));
+      display: grid;
+      place-items: center;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .brand-copy {
+      min-width: 0;
+    }
+
+    .brand-title {
+      font-size: 0.96rem;
+      font-weight: 650;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      white-space: nowrap;
       overflow: hidden;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      text-overflow: ellipsis;
     }
 
-    .card img {
+    .brand-subtitle {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 0.8rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .ghost-btn,
+    .primary-btn,
+    .chip {
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.04);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 11px 16px;
+      transition: 180ms ease;
+      cursor: pointer;
+    }
+
+    .ghost-btn:hover,
+    .chip:hover {
+      background: rgba(255,255,255,0.07);
+      border-color: rgba(255,255,255,0.2);
+      transform: translateY(-1px);
+    }
+
+    .primary-btn {
+      background: linear-gradient(135deg, rgba(232,220,196,0.14), rgba(184,158,118,0.18));
+      border-color: rgba(232,220,196,0.25);
+      color: var(--accent);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+    }
+
+    .primary-btn:hover {
+      background: linear-gradient(135deg, rgba(232,220,196,0.2), rgba(184,158,118,0.24));
+      transform: translateY(-1px);
+    }
+
+    .hero {
+      padding: 54px 0 28px;
+    }
+
+    .hero-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 34px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02)),
+        linear-gradient(135deg, rgba(232,220,196,0.06), transparent 50%);
+      box-shadow: var(--shadow);
+      padding: clamp(28px, 5vw, 60px);
+      isolation: isolate;
+    }
+
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      inset: auto -10% -45% auto;
+      width: 380px;
+      height: 380px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(184,158,118,0.22), transparent 68%);
+      z-index: -1;
+      filter: blur(15px);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.03);
+      color: var(--muted);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .eyebrow-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-2);
+      box-shadow: 0 0 0 6px rgba(184,158,118,0.12);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr);
+      gap: 28px;
+      align-items: end;
+      margin-top: 22px;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(2.6rem, 7vw, 5.7rem);
+      line-height: 0.95;
+      letter-spacing: -0.05em;
+      max-width: 11ch;
+    }
+
+    .hero p {
+      margin: 18px 0 0;
+      max-width: 58ch;
+      color: var(--muted);
+      font-size: clamp(1rem, 1.35vw, 1.12rem);
+      line-height: 1.75;
+    }
+
+    .hero-meta {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
       width: 100%;
-      height: 240px;
-      object-fit: cover;
-      display: block;
     }
 
-    .caption {
-      padding: 12px 14px;
-      font-size: 0.95rem;
+    .stat {
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.03);
+      padding: 18px;
+      min-height: 122px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
     }
 
-    footer {
-      text-align: center;
-      padding: 20px;
-      color: #777;
+    .stat-value {
+      font-size: clamp(1.35rem, 2.2vw, 2rem);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+    }
+
+    .stat-label {
+      margin-top: 8px;
+      color: var(--muted);
       font-size: 0.9rem;
+      line-height: 1.5;
+    }
+
+    .section-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 26px 0 18px;
+      flex-wrap: wrap;
+    }
+
+    .section-title {
+      font-size: clamp(1.2rem, 2vw, 1.5rem);
+      font-weight: 650;
+      letter-spacing: -0.03em;
+    }
+
+    .section-copy {
+      color: var(--muted);
+      margin-top: 6px;
+      font-size: 0.98rem;
+      line-height: 1.65;
+    }
+
+    .filters {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .chip {
+      padding: 10px 14px;
+      color: var(--muted);
+    }
+
+    .chip.active {
+      background: rgba(232,220,196,0.12);
+      color: var(--accent);
+      border-color: rgba(232,220,196,0.2);
+    }
+
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: 18px;
+      padding-bottom: 54px;
+    }
+
+    .project {
+      grid-column: span 4;
+      position: relative;
+      overflow: hidden;
+      min-height: 400px;
+      border-radius: var(--radius-xl);
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.03);
+      box-shadow: var(--shadow);
+      cursor: pointer;
+      transform: translateY(18px);
+      opacity: 0;
+      transition: transform 600ms ease, opacity 600ms ease, border-color 220ms ease;
+    }
+
+    .project.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .project:hover {
+      border-color: rgba(232,220,196,0.24);
+    }
+
+    .project.tall { min-height: 560px; }
+    .project.wide { grid-column: span 8; min-height: 470px; }
+
+    .project-media {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 800ms ease, filter 400ms ease;
+      filter: saturate(0.92) contrast(1.02) brightness(0.9);
+    }
+
+    .project:hover .project-media {
+      transform: scale(1.04);
+      filter: saturate(1) contrast(1.04) brightness(0.96);
+    }
+
+    .project-overlay {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(0,0,0,0.04) 10%, rgba(0,0,0,0.18) 42%, rgba(0,0,0,0.92) 100%),
+        linear-gradient(180deg, transparent 30%, rgba(0,0,0,0.55) 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 24px;
+    }
+
+    .project-topline {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .project-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: rgba(255,255,255,0.72);
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .project-kicker::before {
+      content: "";
+      width: 16px;
+      height: 1px;
+      background: rgba(255,255,255,0.5);
+    }
+
+    .project-index {
+      color: rgba(255,255,255,0.55);
+      font-size: 0.82rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .project-title {
+      margin: 0;
+      font-size: clamp(1.3rem, 2vw, 1.95rem);
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+      max-width: 14ch;
+    }
+
+    .project-desc {
+      margin: 12px 0 0;
+      max-width: 46ch;
+      color: rgba(255,255,255,0.72);
+      font-size: 0.97rem;
+      line-height: 1.65;
+    }
+
+    .project-tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
+    .tag {
+      border-radius: 999px;
+      padding: 8px 11px;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.72);
+      font-size: 0.79rem;
+    }
+
+    .footer {
+      padding: 10px 0 50px;
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      color: var(--muted-2);
+      border-top: 1px solid rgba(255,255,255,0.06);
+      margin-top: 10px;
+    }
+
+    .footer strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding: 22px;
+      background: rgba(0,0,0,0.76);
+      backdrop-filter: blur(18px);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 220ms ease, visibility 220ms ease;
+      z-index: 100;
+    }
+
+    .modal.open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-card {
+      width: min(1200px, 100%);
+      max-height: min(90vh, 960px);
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(300px, 0.75fr);
+      gap: 0;
+      overflow: hidden;
+      border-radius: 30px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: #0b0b0b;
+      box-shadow: 0 30px 120px rgba(0,0,0,0.65);
+    }
+
+    .modal-visual {
+      min-height: 300px;
+      background: #060606;
+    }
+
+    .modal-visual img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .modal-body {
+      padding: 30px;
+      overflow: auto;
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+    }
+
+    .modal-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+      color: var(--muted);
+      font-size: 0.82rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .modal-title {
+      margin: 0;
+      font-size: clamp(1.8rem, 3vw, 3rem);
+      line-height: 0.95;
+      letter-spacing: -0.05em;
+    }
+
+    .modal-text {
+      margin-top: 16px;
+      color: var(--muted);
+      line-height: 1.8;
+      font-size: 1rem;
+    }
+
+    .modal-list {
+      display: grid;
+      gap: 10px;
+      margin: 26px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .modal-list li {
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+      color: #d8d7d1;
+      line-height: 1.6;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 26px;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(0,0,0,0.44);
+      color: white;
+      cursor: pointer;
+      font-size: 1.2rem;
+      z-index: 3;
+    }
+
+    .empty-state {
+      grid-column: 1 / -1;
+      padding: 36px;
+      border-radius: 26px;
+      border: 1px dashed rgba(255,255,255,0.12);
+      color: var(--muted);
+      background: rgba(255,255,255,0.02);
+      display: none;
+    }
+
+    @media (max-width: 1100px) {
+      .hero-grid,
+      .modal-card {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-meta {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .project,
+      .project.wide,
+      .project.tall {
+        grid-column: span 6;
+        min-height: 460px;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .wrap { width: min(calc(100% - 20px), var(--max)); }
+
+      .topbar-inner {
+        min-height: 72px;
+      }
+
+      .nav-actions .ghost-btn {
+        display: none;
+      }
+
+      .hero {
+        padding-top: 28px;
+      }
+
+      .hero-card {
+        border-radius: 24px;
+        padding: 22px;
+      }
+
+      .hero-meta {
+        grid-template-columns: 1fr;
+      }
+
+      .portfolio-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .project,
+      .project.wide,
+      .project.tall {
+        grid-column: auto;
+        min-height: 420px;
+      }
+
+      .project-title {
+        max-width: none;
+      }
+
+      .project-desc {
+        font-size: 0.94rem;
+      }
+
+      .modal-body {
+        padding: 22px;
+      }
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Your Name 1</h1>
-    <p>Selected work</p>
+  <div class="grain"></div>
+
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <a href="#top" class="brand" aria-label="Go to top">
+        <div class="brand-mark">YN</div>
+        <div class="brand-copy">
+          <div class="brand-title">Your Name</div>
+          <div class="brand-subtitle">Portfolio Selection</div>
+        </div>
+      </a>
+
+      <div class="nav-actions">
+        <a class="ghost-btn" href="#portfolio">View Work</a>
+        <a class="primary-btn" href="mailto:your@email.com">Contact</a>
+      </div>
+    </div>
   </header>
 
-  <main class="gallery">
-    <div class="card">
-      <img src="images/work1.jpg" alt="Project 1">
-      <div class="caption">Project 1</div>
-    </div>
+  <main id="top">
+    <section class="hero wrap">
+      <div class="hero-card">
+        <div class="eyebrow">
+          <span class="eyebrow-dot"></span>
+          Curated portfolio
+        </div>
 
-    <div class="card">
-      <img src="images/work2.jpg" alt="Project 2">
-      <div class="caption">Project 2</div>
-    </div>
+        <div class="hero-grid">
+          <div>
+            <h1>Work that deserves a closer look.</h1>
+            <p>
+              A refined collection of selected projects, presented with minimal distraction and maximum emphasis on the work itself.
+              Replace the sample images and text below with your own projects and this page becomes your public portfolio.
+            </p>
+          </div>
 
-    <div class="card">
-      <img src="images/work3.jpg" alt="Project 3">
-      <div class="caption">Project 3</div>
-    </div>
+          <div class="hero-meta">
+            <div class="stat">
+              <div class="stat-value">12+</div>
+              <div class="stat-label">Featured projects presented in a clean, high-contrast gallery.</div>
+            </div>
+            <div class="stat">
+              <div class="stat-value">1 File</div>
+              <div class="stat-label">Everything lives in this single HTML file, including styling and interaction.</div>
+            </div>
+            <div class="stat">
+              <div class="stat-value">Mobile</div>
+              <div class="stat-label">Responsive layout for phones, tablets, desktops, and QR-code visitors.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    <div class="card">
-      <img src="images/work4.jpg" alt="Project 4">
-      <div class="caption">Project 4</div>
-    </div>
+    <section class="wrap" id="portfolio">
+      <div class="section-bar">
+        <div>
+          <div class="section-title">Selected Projects</div>
+          <div class="section-copy">Tap any project to open it larger. Use the filters if you want to separate categories.</div>
+        </div>
+        <div class="filters" id="filters"></div>
+      </div>
 
-    <div class="card">
-      <img src="images/work5.jpg" alt="Project 5">
-      <div class="caption">Project 5</div>
-    </div>
+      <div class="portfolio-grid" id="portfolioGrid"></div>
+      <div class="empty-state" id="emptyState">No projects match this filter.</div>
 
-    <div class="card">
-      <img src="images/work6.jpg" alt="Project 6">
-      <div class="caption">Project 6</div>
-    </div>
+      <footer class="footer">
+        <div>© <strong>Your Name</strong>. All work shown for portfolio presentation.</div>
+        <div><strong>Email:</strong> <a href="mailto:your@email.com">your@email.com</a></div>
+      </footer>
+    </section>
   </main>
 
-  <footer>
-    Contact: your@email.com
-  </footer>
+  <div class="modal" id="modal" aria-hidden="true">
+    <button class="close-btn" id="closeModal" aria-label="Close">✕</button>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-visual">
+        <img id="modalImage" src="" alt="" />
+      </div>
+      <div class="modal-body">
+        <div class="modal-meta">
+          <span id="modalCategory">Category</span>
+          <span id="modalYear">Year</span>
+        </div>
+        <h2 class="modal-title" id="modalTitle">Project Title</h2>
+        <div class="modal-text" id="modalText"></div>
+        <ul class="modal-list" id="modalHighlights"></ul>
+        <div class="modal-actions">
+          <a class="primary-btn" id="modalLink" href="#" target="_blank" rel="noopener">Open Project Link</a>
+          <button class="ghost-btn" id="modalCloseSecondary">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /*
+      HOW TO USE:
+      1. Replace the sample projects below with your own.
+      2. Put your image files in the same folder, or use direct image URLs.
+      3. Update the brand initials, name, email, and headings above.
+      4. If you do not want filters, keep all categories the same or remove the filter code.
+
+      IMAGE TIP:
+      - Local image example: "images/project-01.jpg"
+      - Online image example: "https://your-site.com/project-01.jpg"
+    */
+
+    const projects = [
+      {
+        title: "Private Residence Renovation",
+        category: "Interiors",
+        year: "2025",
+        image: "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1400&q=80",
+        description: "A warm, contemporary renovation balancing clean detailing, premium finishes, and a restrained material palette.",
+        highlights: [
+          "Full interior transformation with a focus on proportion, tone, and practical daily use.",
+          "Natural textures and low-glare surfaces to create a calm, premium atmosphere.",
+          "Presented to feel editorial rather than cluttered, keeping attention on the finished work."
+        ],
+        size: "wide",
+        link: "#"
+      },
+      {
+        title: "Bespoke Joinery Detail",
+        category: "Craft",
+        year: "2025",
+        image: "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80",
+        description: "Precision-crafted built-in storage and wall panelling designed to elevate the room while remaining understated.",
+        highlights: [
+          "Tailored joinery designed specifically for the site.",
+          "Refined alignment, shadow gaps, and hidden storage solutions.",
+          "Close-up presentation emphasises workmanship and finish quality."
+        ],
+        size: "tall",
+        link: "#"
+      },
+      {
+        title: "Studio Brand Environment",
+        category: "Commercial",
+        year: "2024",
+        image: "https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=1200&q=80",
+        description: "A dark, tactile workspace where branding, atmosphere, and functionality work together as one system.",
+        highlights: [
+          "Layered lighting used to create depth across the space.",
+          "Brand cues embedded subtly into materials and form.",
+          "Open-plan layout with dedicated points of focus and privacy."
+        ],
+        size: "standard",
+        link: "#"
+      },
+      {
+        title: "Hospitality Lighting Scheme",
+        category: "Lighting",
+        year: "2024",
+        image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1200&q=80",
+        description: "A controlled lighting approach built to create mood, hierarchy, and a polished evening presence.",
+        highlights: [
+          "Ambient, task, and accent lighting combined for a layered result.",
+          "Warm colour temperatures and low-visibility fittings.",
+          "The work is shown prominently with minimal surrounding distraction."
+        ],
+        size: "standard",
+        link: "#"
+      },
+      {
+        title: "Kitchen Material Story",
+        category: "Interiors",
+        year: "2025",
+        image: "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=1200&q=80",
+        description: "A restrained kitchen composition built around stone, brushed metal, dark timber, and refined contrast.",
+        highlights: [
+          "Strong material identity with reduced visual noise.",
+          "Photographed to emphasise finish, balance, and crisp detailing.",
+          "Designed for a premium impression on both phone and desktop."
+        ],
+        size: "standard",
+        link: "#"
+      },
+      {
+        title: "Exterior Feature Entrance",
+        category: "Architecture",
+        year: "2023",
+        image: "https://images.unsplash.com/photo-1511818966892-d7d671e672a2?auto=format&fit=crop&w=1400&q=80",
+        description: "A clean architectural frontage with strong symmetry, controlled texture, and a more formal visual tone.",
+        highlights: [
+          "Composition prioritises form and arrival experience.",
+          "Dark palette reinforces professionalism and contrast.",
+          "Useful as a hero-style anchor inside the gallery."
+        ],
+        size: "wide",
+        link: "#"
+      },
+      {
+        title: "Furniture Styling Series",
+        category: "Styling",
+        year: "2024",
+        image: "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1100&q=80",
+        description: "A detail-led composition showing furniture, object placement, and tonal balance within a dark interior setting.",
+        highlights: [
+          "Focus on spacing, rhythm, and material contrast.",
+          "Suitable for a tighter portrait image slot.",
+          "Built to keep the portfolio itself at the center of the page."
+        ],
+        size: "standard",
+        link: "#"
+      },
+      {
+        title: "Bathroom Stone Composition",
+        category: "Interiors",
+        year: "2025",
+        image: "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=900&q=80",
+        description: "A highly finished wet-room concept that uses surface, shadow, and restraint to create a premium feel.",
+        highlights: [
+          "Monolithic visual language with subtle highlights.",
+          "Shot to highlight craftsmanship and alignment.",
+          "Presented cleanly for business-card traffic and quick browsing."
+        ],
+        size: "tall",
+        link: "#"
+      }
+    ];
+
+    const grid = document.getElementById('portfolioGrid');
+    const filters = document.getElementById('filters');
+    const emptyState = document.getElementById('emptyState');
+    const modal = document.getElementById('modal');
+    const modalImage = document.getElementById('modalImage');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalText = document.getElementById('modalText');
+    const modalCategory = document.getElementById('modalCategory');
+    const modalYear = document.getElementById('modalYear');
+    const modalHighlights = document.getElementById('modalHighlights');
+    const modalLink = document.getElementById('modalLink');
+    const closeModal = document.getElementById('closeModal');
+    const modalCloseSecondary = document.getElementById('modalCloseSecondary');
+
+    const categories = ['All', ...new Set(projects.map(project => project.category))];
+    let activeFilter = 'All';
+
+    function makeFilters() {
+      filters.innerHTML = categories.map(category => `
+        <button class="chip ${category === activeFilter ? 'active' : ''}" data-filter="${category}">
+          ${category}
+        </button>
+      `).join('');
+
+      filters.querySelectorAll('.chip').forEach(button => {
+        button.addEventListener('click', () => {
+          activeFilter = button.dataset.filter;
+          makeFilters();
+          renderProjects();
+        });
+      });
+    }
+
+    function renderProjects() {
+      const filtered = activeFilter === 'All'
+        ? projects
+        : projects.filter(project => project.category === activeFilter);
+
+      grid.innerHTML = filtered.map((project, index) => `
+        <article class="project ${project.size || 'standard'}" data-index="${projects.indexOf(project)}" tabindex="0" aria-label="Open ${project.title}">
+          <img class="project-media" src="${project.image}" alt="${project.title}" loading="lazy" />
+          <div class="project-overlay">
+            <div class="project-topline">
+              <div class="project-kicker">${project.category}</div>
+              <div class="project-index">${String(index + 1).padStart(2, '0')}</div>
+            </div>
+            <h3 class="project-title">${project.title}</h3>
+            <p class="project-desc">${project.description}</p>
+            <div class="project-tags">
+              <span class="tag">${project.year}</span>
+              <span class="tag">Tap to expand</span>
+            </div>
+          </div>
+        </article>
+      `).join('');
+
+      emptyState.style.display = filtered.length ? 'none' : 'block';
+
+      const cards = Array.from(document.querySelectorAll('.project'));
+      cards.forEach((card, i) => {
+        setTimeout(() => card.classList.add('show'), 60 * i);
+
+        card.addEventListener('click', () => openModal(Number(card.dataset.index)));
+        card.addEventListener('keydown', (event) => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            openModal(Number(card.dataset.index));
+          }
+        });
+      });
+    }
+
+    function openModal(index) {
+      const project = projects[index];
+      if (!project) return;
+
+      modalImage.src = project.image;
+      modalImage.alt = project.title;
+      modalTitle.textContent = project.title;
+      modalText.textContent = project.description;
+      modalCategory.textContent = project.category;
+      modalYear.textContent = project.year;
+      modalHighlights.innerHTML = (project.highlights || []).map(item => `<li>${item}</li>`).join('');
+
+      if (project.link && project.link !== '#') {
+        modalLink.href = project.link;
+        modalLink.style.display = 'inline-flex';
+      } else {
+        modalLink.style.display = 'none';
+      }
+
+      modal.classList.add('open');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function shutModal() {
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    closeModal.addEventListener('click', shutModal);
+    modalCloseSecondary.addEventListener('click', shutModal);
+    modal.addEventListener('click', event => {
+      if (event.target === modal) shutModal();
+    });
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape') shutModal();
+    });
+
+    makeFilters();
+    renderProjects();
+  </script>
 </body>
 </html>
